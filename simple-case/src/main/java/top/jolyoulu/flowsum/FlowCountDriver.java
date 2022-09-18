@@ -1,15 +1,15 @@
-package top.jolyoulu.wordcount;
+package top.jolyoulu.flowsum;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.lib.CombineFileInputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import top.jolyoulu.wordcount.WordCountMapper;
+import top.jolyoulu.wordcount.WordCountReducer;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -17,22 +17,22 @@ import java.io.IOException;
  * @Date: 2022/9/10 17:32
  * @Version 1.0
  */
-public class WordCountDriver {
+public class FlowCountDriver {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         Configuration conf = new Configuration();
         //1.获取job对象
         Job job = Job.getInstance(conf);
         //2.设置jar存储位置
-        job.setJarByClass(WordCountDriver.class);
+        job.setJarByClass(FlowCountDriver.class);
         //3.关联Map和Reduce类
-        job.setMapperClass(WordCountMapper.class);
-        job.setReducerClass(WordCountReducer.class);
+        job.setMapperClass(FlowCountMapper.class);
+        job.setReducerClass(FlowCountReducer.class);
         //4.设置Mapper阶段输出数据的key和value类型
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
+        job.setMapOutputValueClass(FlowBean.class);
         //5.设置最终数据输出的key和value类型
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(FlowBean.class);
         //6.设置输入路径和输出路径
         FileInputFormat.setInputPaths(job,new Path(args[0]));
         FileOutputFormat.setOutputPath(job,new Path(args[1]));
