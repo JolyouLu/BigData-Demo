@@ -25,6 +25,7 @@ public class WordCountMapper extends Mapper<LongWritable, Text,Text, IntWritable
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         //1.获取一行
         String line = value.toString();
+        System.out.println("key => "+key+"; value =>"+line);
         //2.根据空格拆分
         String[] words = line.split(" ");
         //3.循环写出
