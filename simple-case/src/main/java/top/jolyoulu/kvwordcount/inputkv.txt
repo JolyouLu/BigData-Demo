@@ -1,0 +1,4 @@
+zhangshang is boy
+lisi is girl
+zhangshang is good 
+lisi is good
