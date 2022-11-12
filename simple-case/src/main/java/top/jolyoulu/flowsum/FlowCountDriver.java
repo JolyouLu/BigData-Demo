@@ -10,7 +10,9 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import top.jolyoulu.wordcount.WordCountMapper;
 import top.jolyoulu.wordcount.WordCountReducer;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @Author: JolyouLu
@@ -18,7 +20,14 @@ import java.io.IOException;
  * @Version 1.0
  */
 public class FlowCountDriver {
-    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
+        //写死路径测试，读取于输出到在target目录下
+        URL resource = FlowCountDriver.class.getClassLoader().getResource("test/flowsum/test_data.txt");
+        File file = new File(resource.toURI());
+        args = new String[]{
+                file.getPath(),
+                file.getParent()+"\\out"
+        };
         Configuration conf = new Configuration();
         //1.获取job对象
         Job job = Job.getInstance(conf);
