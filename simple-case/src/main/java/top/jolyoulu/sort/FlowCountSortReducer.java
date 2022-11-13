@@ -10,7 +10,7 @@ import java.io.IOException;
  * @Date: 2022/11/12 19:11
  * @Version 1.0
  */
-public class FlowCountReducer extends Reducer<FlowBean, Text,Text,FlowBean> {
+public class FlowCountSortReducer extends Reducer<FlowBean, Text,Text,FlowBean> {
     @Override
     protected void reduce(FlowBean key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         for (Text value : values) {

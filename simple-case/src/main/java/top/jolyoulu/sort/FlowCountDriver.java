@@ -6,6 +6,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,23 +28,26 @@ public class FlowCountDriver {
         };
 
         Configuration conf = new Configuration();
-        //1.获取job对象
+        //获取job对象
         Job job = Job.getInstance(conf);
-        //2.设置jar存储位置
+        //设置jar存储位置
         job.setJarByClass(FlowCountDriver.class);
-        //3.关联Map和Reduce类
+        //关联Map和Reduce类
         job.setMapperClass(FlowCountMapper.class);
-        job.setReducerClass(FlowCountReducer.class);
-        //4.设置Mapper阶段输出数据的key和value类型
+        job.setReducerClass(FlowCountSortReducer.class);
+        //设置Mapper阶段输出数据的key和value类型
         job.setMapOutputKeyClass(FlowBean.class);
         job.setMapOutputValueClass(Text.class);
-        //5.设置最终数据输出的key和value类型
+        //设置最终数据输出的key和value类型
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(FlowBean.class);
-        //6.设置输入路径和输出路径
+        //设置分区
+        job.setPartitionerClass(ProvincePartitioner.class);
+        job.setNumReduceTasks(4);
+        //设置输入路径和输出路径
         FileInputFormat.setInputPaths(job,new Path(args[0]));
         FileOutputFormat.setOutputPath(job,new Path(args[1]));
-        //7.提交job
+        //提交job
         boolean result = job.waitForCompletion(true);
         System.exit(result ? 0 : 1);
     }
