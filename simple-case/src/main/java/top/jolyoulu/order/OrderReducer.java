@@ -13,6 +13,11 @@ import java.io.IOException;
 public class OrderReducer extends Reducer<OrderBean, NullWritable,OrderBean,NullWritable> {
     @Override
     protected void reduce(OrderBean key, Iterable<NullWritable> values, Context context) throws IOException, InterruptedException {
+        //遍历的是分组的
+        System.out.println("============ GROPU"+key.getOrderId() + " ============");
+        for (NullWritable value : values) {
+            System.out.println(key);
+        }
         context.write(key,NullWritable.get());
     }
 }
